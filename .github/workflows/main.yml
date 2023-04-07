@@ -1,0 +1,62 @@
+on:
+  pull_request:
+    branches:
+    # you can add more branches 
+      - main
+      - master
+      - base
+      - advanced
+      - nobug
+      - auth
+  push:
+    branches:
+    # you can add more branches 
+      - main
+      - master
+      - develop
+      - base 
+      - advanced
+      - nobug
+      - auth
+  workflow_dispatch: # run Workflow Job manually from action tab
+name: "Upload Video To Youtube And Create Post in Facebook Page and Create ReadMe.md in Github"
+jobs:
+  build:
+    name: Upload Video To Youtube And Create Post in Facebook Page and Create ReadMe.md in Github
+    runs-on: ubuntu-latest
+    # runs-on: macos-latest #todo change
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          # cache: 'pip' # caching pip dependencies
+      - run: sudo python setup.py install
+      # - run: pip install -r requirements.txt
+      # - run: python my_script.py
+      - run: |
+          pwd
+           youtube-upload \
+            --title="${{ github.event.repository.name }}" \
+            # --title="A.S. Mutter" \
+            --description="${{ github.event.repository.description }}" \
+            # --description="A.S. Mutter plays Beethoven" \ 
+            --category="Comedy" \
+            --tags="Funny, Comedy , Teen Chapri, 3 Chapri " \ 
+            --recording-date="${{ github.event.repository.created_at }}" \ 
+            # --recording-date="2011-03-10T15:32:17.0Z" \ 
+            --default-language="hi" \
+            --default-audio-language="hi" \
+            --client-secrets="${{ secrets.GCP }}" \
+            --credentials-file="${{ secrets.GCP }}" \
+            # --credentials-file="my_credentials.json" \
+            # --playlist="My favorite music" \
+            # --embeddable=True|False \
+            --embeddable=True \
+            # --privacy (public | unlisted | private)  
+            --privacy= public \
+            # --publish-at (YYYY-MM-DDThh:mm:ss.sZ)  
+            # --location (latitude=VAL,longitude=VAL[,altitude=VAL])  
+            # --thumbnail (string)  
+              anne_sophie_mutter.flv
+              tx2Zb-145Yz
