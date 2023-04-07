@@ -35,7 +35,7 @@ jobs:
       # - run: pip install -r requirements.txt
       # - run: python my_script.py
       - run: |
-          pwd
+          
            youtube-upload \
             --title="${{ github.event.repository.name }}" \
             # --title="A.S. Mutter" \
